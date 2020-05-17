@@ -1,0 +1,22 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t react-tests -f Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true USERNAME/react-test npm test
+
+after_success:
+  - docker build -t automaat/multi-client ./client
+  - docker build -t automaat/multi-nginx ./nginx
+  - docker build -t automaat/multi-server ./server
+  - docker build -t automaat/multi-worker ./worker
+  # login to docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push automaat/multi-client
+  - docker push automaat/multi-nginx
+  - docker push automaat/multi-server
+  - docker push automaat/multi-worker
