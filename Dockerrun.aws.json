@@ -24,7 +24,7 @@
         },
         {
             "name": "nginx",
-            "image": "automaat/multi-worker",
+            "image": "automaat/multi-nginx",
             "portMappings": [
                 {
                     "hostPort": 80,
